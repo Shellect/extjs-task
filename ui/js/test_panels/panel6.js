@@ -1,3 +1,24 @@
+const task6Sm = new Ext.grid.CheckboxSelectionModel({
+    listeners: {
+        selectionchange: (ths) => {
+            task6Btn.disabled = !ths.getSelections().length;
+        }
+    }
+});
+
+const task6Btn = new Ext.Button({
+    disabled: true,
+    text: "Выберите строку",
+    handler: (b, e) => {
+        task6Lbl.setText("Selected rows: "
+        + task6Sm.getSelections().reduce((accum, el) => accum + `${el.data.person} ${el.data.product} ${el.data.city}; `, ''));
+    }
+})
+
+const task6Lbl = new Ext.form.Label({
+    text: ""
+})
+
 panel6 = new Ext.Panel({
     title: 'Задание 6',
     listeners: {
@@ -33,7 +54,45 @@ panel6 = new Ext.Panel({
             xtype: 'panel',
             flex: 1,
             padding: 10,
-            html: 'Тут решение'
+            items: [
+                new Ext.grid.GridPanel({
+                    title: "Task 6",
+                    width: 630,
+                    height: 400,
+                    store: new Ext.data.Store({
+                        url: 'http://localhost:3000/products',
+                        autoLoad: true,
+                        reader: new Ext.data.JsonReader({
+                            root: 'rows',
+                            idProperty: 'id'
+                        }, Ext.data.Record.create([
+                            {name: 'person', type: 'string'},
+                            {name: 'product', type: 'string'},
+                            {name: 'city', type: 'string'},
+                            {name: 'value', type: 'float'}
+                        ]))
+                    }),
+                    colModel: new Ext.grid.ColumnModel({
+                        defaults: {
+                            width: 100,
+                            sortable: true
+                        },
+                        columns: [
+                            {header: 'Person', width: 200, sortable: true, dataIndex: 'person'},
+                            {header: 'Product', width: 200, sortable: true, dataIndex: 'product'},
+                            {header: 'City', width: 200, sortable: true, dataIndex: 'city'},
+                            task6Sm
+                        ]
+                    }),
+                    selModel: task6Sm,
+                    tbar: new Ext.Toolbar({
+                        items: [
+                            task6Btn
+                        ]
+                    })
+                }),
+                task6Lbl
+            ]
         }
     ]
 });

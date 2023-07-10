@@ -1,3 +1,73 @@
+const panel9Form = new Ext.form.FormPanel({
+    title: 'Form Layout',
+    bodyStyle: 'padding:15px',
+    defaultType: 'textfield',
+    defaults: {
+        width: 400,
+        msgTarget: 'side'
+    },
+    items: [
+        {
+            xtype: 'fieldset',
+            id: "panel3-fieldset",
+            items: [
+                {
+                    xtype: 'radiogroup',
+                    id: 'test',
+                    columns: 1,
+                    items: [
+                        {boxLabel: 'Item 1', name: 'test', inputValue: "1"},
+                        {boxLabel: 'Item 2', name: 'test', inputValue: "2"},
+                    ]
+                },
+                {
+                    xtype: 'checkboxgroup',
+                    id: 'test2',
+                    columns: 1,
+                    items: [
+                        {boxLabel: 'Item 1', name: 'test2', inputValue: "0"},
+                        {boxLabel: 'Item 2', name: 'test2', inputValue: "1"},
+                    ]
+                },
+                {
+                    xtype: 'textfield',
+                    id: 'text1',
+                    fieldLabel: 'Text 1',
+                    name: 'text1',
+                },
+                {
+                    xtype: 'textfield',
+                    id: 'text2',
+                    fieldLabel: 'Text 2',
+                    name: 'text2'
+                },
+                {
+                    xtype: 'combo',
+                    id: 'cmb',
+                    store: [1, 2, 3],
+                    mode: 'local'
+                },
+                {
+                    xtype: 'button',
+                    text: "Check",
+                    handler(){
+                        fetch('http://localhost:3000/task9')
+                            .then(response => response.json())
+                            .then(data => {
+                                const elements = panel9Form.getForm().items;
+                                elements.each(el => {
+                                    if(data[el.id]){
+                                        el.setValue(data[el.id]);
+                                    }
+                                })
+                            })
+                    }
+                }
+            ]
+        }
+    ]
+})
+
 panel9 = new Ext.Panel({
     title: 'Задание 9',
     listeners: {
@@ -31,7 +101,9 @@ panel9 = new Ext.Panel({
             xtype: 'panel',
             flex: 1,
             padding: 10,
-            html: 'Тут решение'
+            items: [
+                panel9Form
+            ]
         }
     ]
 });

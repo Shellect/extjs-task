@@ -31,7 +31,38 @@ panel10 = new Ext.Panel({
             xtype: 'panel',
             flex: 1,
             padding: 10,
-            html: 'Тут решение'
+            items: [
+                new Ext.TabPanel({
+                    listeners: {
+                        afterrender(panel){
+                            const tabs = [new Ext.Panel({
+                                title: 'Tab 1',
+                                html: 'First tab'
+                            }), new Ext.Panel({
+                                title: 'Tab 2',
+                                html: 'Second tab',
+                                listeners: {
+                                    activate(){
+                                        tabs[2].enable();
+                                    }
+                                }
+                            }), new Ext.Panel({
+                                title: 'Tab 3',
+                                html: 'Third tab',
+                                disabled: true,
+                                listeners: {
+                                    activate(){
+                                        tabs[0].disable();
+                                    }
+                                }
+                            })];
+                            tabs.forEach(tab => panel.add(tab));
+                            panel.doLayout();
+
+                        }
+                    }
+                })
+            ]
         }
     ]
 });

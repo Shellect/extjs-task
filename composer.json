@@ -1,0 +1,15 @@
+{
+    "name": "oleg/extjs-learning",
+    "autoload": {
+        "psr-4": {
+            "Oleg\\ExtjsLearning\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Your name",
+            "email": "you@example.com"
+        }
+    ],
+    "require": {}
+}

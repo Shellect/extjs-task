@@ -27,11 +27,27 @@ panel1 = new Ext.Panel({
                 'Добавить кнопку, при нажатии на которую, внизу будет появлятся такая же кнопка.',
                 'При этом нажатая кнопка деактивируется через 3 секунды после нажатия'
             ].join('<br/>')
-        }, {
+        },
+        {
             xtype: 'panel',
             flex: 1,
             padding: 10,
-            html: 'Тут решение'
+            items: [{
+                xtype: 'button',
+                text: "Нажми меня",
+            }],
+            listeners: {
+                afterrender: function (panel) {
+                    panel.getEl().on('click', function (e, target) {
+                        if (target.tagName === 'BUTTON') {
+                            const btn = new Ext.Button({xtype: 'button', text: "Нажми меня"});
+                            setTimeout(() => panel.remove(btn), 1000);
+                            panel.add(btn);
+                            panel.doLayout();
+                        }
+                    });
+                }
+            }
         }
     ]
 });

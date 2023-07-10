@@ -32,7 +32,22 @@ panel13 = new Ext.Panel({
             xtype: 'panel',
             flex: 1,
             padding: 10,
-            html: 'Тут решение'
+            listeners: {
+                afterrender(panel) {
+                    fetch('http://localhost:3000/articles').then(response => response.json()).then(data => {
+                        tpl.overwrite(panel.getEl(), data);
+                    });
+                    const tpl = new Ext.XTemplate('<table><thead>',
+                        '<tr><th>person</th><th>title</th><th>Content</th></tr></thead>',
+                        '<tbody><tpl for="data.articles"><tr>',
+                        '<tpl if="parent.data.likes[xindex - 1].vote &gt; 2">',
+                        '<td>{[parent.data.likes[xindex - 1].person]}</td>',
+                        '</tpl>',
+                        '<td>{title}</td>',
+                        '<td>{content}</td>',
+                        '</tr></tpl></tbody>');
+                }
+            }
         }
     ]
 });

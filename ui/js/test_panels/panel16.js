@@ -32,7 +32,36 @@ panel16 = new Ext.Panel({
             xtype: 'panel',
             flex: 1,
             padding: 10,
-            html: 'Тут решение'
+            layout: {
+                type: 'vbox',
+                padding: '5',
+                align: 'center'
+            },
+            items: [
+                new Ext.Window({
+                    title: 'Приложение',
+                    width: 500,
+                    height: 150,
+                    loadMask: true,
+                    defaultType: 'label',
+                    layout: {
+                        type: 'vbox',
+                        align: 'center'
+                    },
+                    listeners: {
+                        afterrender(window) {
+                            const mask = new Ext.LoadMask(window.getEl(), {msg: "Wait, loading..."});
+                            mask.show();
+                            fetch("http://localhost:3000/long-load").then(() => {
+                                mask.hide();
+                                window.add({html : "Success loaded"});
+                                window.doLayout();
+                            })
+                            window.show();
+                        },
+                    }
+                })
+            ]
         }
     ]
 });

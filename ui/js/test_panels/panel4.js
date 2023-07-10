@@ -1,3 +1,7 @@
+const result = new Ext.form.Label({
+    text: "Дата не выбрана"
+})
+
 panel4 = new Ext.Panel({
     title: 'Задание 4',
     listeners: {
@@ -32,7 +36,19 @@ panel4 = new Ext.Panel({
             xtype: 'panel',
             flex: 1,
             padding: 10,
-            html: 'Тут решение'
+            items: [
+                new Ext.form.DateField({
+                    editable: false,
+                    format: "d.m.Y",
+                    listeners: {
+                        select: function (self, date){
+                            result.setText(date.format('Y-m-d'));
+                        }
+                    }
+                }),
+                result
+
+            ]
         }
     ]
 });

@@ -3,7 +3,6 @@ panel11 = new Ext.Panel({
     listeners: {
         scope: this,
         activate: function (a) {
-            console.log('activate');
             a.doLayout();
         }
     },
@@ -30,7 +29,15 @@ panel11 = new Ext.Panel({
             xtype: 'panel',
             flex: 1,
             padding: 10,
-            html: 'Тут решение'
+            listeners: {
+                afterrender(panel) {
+                    fetch('http://localhost:3000/users').then(response => response.json()).then(data => {
+                        tpl.overwrite(panel.getEl(), data);
+                    });
+                    const tpl = new Ext.XTemplate('<table><thead><tr><th>id</th><th>name</th></tr></thead>',
+                        '<tbody><tpl for="."><tr><td>{id}</td><td>{username}</td></tr></tpl></tbody>');
+                }
+            }
         }
     ]
 });

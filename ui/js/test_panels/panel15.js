@@ -31,7 +31,61 @@ panel15 = new Ext.Panel({
             xtype: 'panel',
             flex: 1,
             padding: 10,
-            html: 'Тут решение'
+            items: [
+                new Ext.TabPanel({
+                    counter: 0,
+                    tabRenderer(index, text){
+                        this.counter+= 1;
+                        const style = `display: inline-block;
+  width: .8em;
+  height: .8em;
+  border-radius: 50%;
+  color: #FD0;
+  font-size: .8em;
+  line-height: .8em;
+  text-align: center;
+  background: #000;
+  padding: .2em`;
+                        const tab = this.getItem(index);
+                        tab.setTitle(`<span style="${style}">${this.counter}</span> ` + text
+                        );
+                    },
+                    items: [
+                        {
+                            title: 'Tab 1',
+                            html: "First Tab",
+                            listeners: {
+                                activate(tab) {
+                                    this.ownerCt.tabRenderer(1, 'Tab 2');
+                                }
+                            }
+                        },
+                        {
+                            title: 'Tab 2',
+                            html: 'Second Tab',
+                            listeners: {
+                                activate(tab) {
+                                    this.ownerCt.tabRenderer(1, 'Tab 2');
+                                }
+                            }
+                        },
+                        {
+                            title: 'Tab 3',
+                            html: 'Third tab',
+                            listeners: {
+                                activate(tab) {
+                                    this.ownerCt.tabRenderer(1, 'Tab 2');
+                                }
+                            }
+                        }
+                    ],
+                    listeners: {
+                        afterrender(panel) {
+                            panel.tabRenderer(1, 'Tab 2');
+                        }
+                    }
+                })
+            ]
         }
     ]
 });

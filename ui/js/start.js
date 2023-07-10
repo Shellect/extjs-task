@@ -18,7 +18,7 @@ Ext.onReady(function () {
         location.hash = '#' + curTabIndex;
     });
     tabPanel.on('afterrender', function (t) {
-        if (location.hash != '') {
+        if (location.hash !== '') {
             var curTabIndex = parseInt(location.hash.split('#')[1]);
             curTabIndex--;
 
